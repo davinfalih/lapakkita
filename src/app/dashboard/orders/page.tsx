@@ -3,16 +3,19 @@ import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+import type { Order, Product } from '@prisma/client'
+
+type OrderWithProduct = Order & { product: Pick<Product, 'nama' | 'foto'> }
 
 export default async function OrdersPage(props: { searchParams: Promise<{ filter?: string }> }) {
   const user = await getCurrentUser()
   if (!user) redirect('/login')
   const { filter } = await props.searchParams
 
-  const where: any = { userId: user.id }
+  const where: Record<string, unknown> = { userId: user.id }
   if (filter && filter !== 'all') where.status = filter
 
-  const orders = await prisma.order.findMany({
+  const orders: OrderWithProduct[] = await prisma.order.findMany({
     where,
     include: { product: { select: { nama: true, foto: true } } },
     orderBy: { createdAt: 'desc' },
