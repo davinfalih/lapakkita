@@ -4,13 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npx prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "npx prisma generate",
+    "db:deploy": "npx prisma migrate deploy",
+    "db:push": "npx prisma db push"
   },
   "dependencies": {
     "@prisma/client": "^7.8.0",
     "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
     "jose": "^6.2.3",
     "next": "16.2.10",
     "prisma": "^7.8.0",
