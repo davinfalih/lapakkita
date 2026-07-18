@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+
+export const dynamic = 'force-dynamic'
 import type { Order, Product } from '@prisma/client'
 
 type OrderWithProduct = Order & { product: Pick<Product, 'nama' | 'foto'> }
