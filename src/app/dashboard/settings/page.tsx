@@ -6,13 +6,14 @@ import { revalidatePath } from 'next/cache'
 export default async function SettingsPage() {
   const user = await getCurrentUser()
   if (!user) redirect('/login')
+  const currentUser = user
 
   async function updateSettings(formData: FormData) {
     'use server'
     const namaToko = formData.get('namaToko') as string
     const noWhatsapp = formData.get('noWhatsapp') as string
     const alamat = formData.get('alamat') as string
-    await prisma.user.update({ where: { id: user.id }, data: { namaToko, noWhatsapp, alamat } })
+    await prisma.user.update({ where: { id: currentUser.id }, data: { namaToko, noWhatsapp, alamat } })
     revalidatePath('/dashboard/settings')
   }
 
