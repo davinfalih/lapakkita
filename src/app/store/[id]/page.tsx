@@ -20,13 +20,14 @@ export default function ProductDetailPage() {
   }, [params.id])
 
   if (!product) return <div className="text-center py-20 text-slate-500">Memuat...</div>
+  const currentProduct = product
 
   async function handleCheckout() {
     const res = await fetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        productId: product.id,
+        productId: currentProduct.id,
         qty,
         pembeliNama: 'Pembeli',
         pembeliAlamat: 'Alamat',
